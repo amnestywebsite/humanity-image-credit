@@ -1,0 +1,6 @@
+.log
+.map
+.vscode
+.DS_Store
+
+vendor

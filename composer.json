@@ -1,0 +1,30 @@
+{
+  "name": "amnestywebsite/humanity-image-credit",
+  "type": "project",
+  "license": "none",
+  "minimum-stability": "stable",
+  "require-dev": {
+    "bigbite/phpcs-config": "v2.0.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "scripts": {
+    "lint": "./vendor/bin/phpcs .",
+    "lang": [
+      "type msgmerge &> /dev/null || { echo 'Please install gettext'; exit 1; }",
+      "wp i18n make-pot . ./languages/aiic.pot --domain=aiic --exclude=private/node_modules,assets,vendor",
+      "for p in ./languages/*.po; do msguniq \"$p\" -o \"$p\"; done",
+      "for p in ./languages/*.po; do msgmerge --quiet -o \"$p.tmp\" --no-fuzzy-matching \"$p\" \"./languages/aiic.pot\"; done",
+      "for p in ./languages/*.po; do msgattrib --no-obsolete -o \"$p\" \"$p.tmp\"; done",
+      "for p in ./languages/*.po.tmp; do rm \"$p\"; done",
+      "for p in ./languages/*.po; do msgfmt -cv --statistics \"$p\" -o \"${p%.*}.mo\"; done"
+    ]
+  },
+  "scripts-descriptions": {
+    "lang": "Updates the POT file, then updates any PO files, and (re)compiles associated MO files",
+    "lint": "Runs PHP coding standard checks"
+  }
+}

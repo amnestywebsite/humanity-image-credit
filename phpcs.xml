@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset name="Humanity Image Credit" namespace="BigBite">
+  <description>PHPCS linting rules for the Humanity Image Credit WP plugin</description>
+  <rule ref="./vendor/bigbite/phpcs-config/BigBite" />
+</ruleset>

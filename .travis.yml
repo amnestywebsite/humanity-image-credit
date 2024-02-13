@@ -1,0 +1,77 @@
+os: linux
+dist: jammy
+language: php
+php:
+  - 8.2
+
+cache:
+  directories:
+  - "$HOME/.composer/cache"
+  - "./vendor"
+
+before_install:
+- phpenv config-rm xdebug.ini
+
+install:
+- composer install
+
+stages:
+  - name: Lint
+    if: branch IS present
+  - name: Update Draft Release [DEV]
+    if: branch = develop AND type != pull_request
+  - name: Update Draft Release [STG]
+    if: branch = staging AND type != pull_request
+  - name: Update Draft Release [PRD]
+    if: branch = main AND type != pull_request
+
+jobs:
+  include:
+  - stage: Lint
+    script:
+    - composer lint
+
+  - stage: Update Draft Release [DEV]
+    script:
+    - zip -r ../humanity-image-credit-develop.zip ./ -x docs\* -x vendor\* -x .\* -x CHANGELOG.md -x CODE_OF_CONDUCT.md -x composer.json -x composer.lock -x CONTRIBUTING.md -x LICENSE.md -x phpcs.xml -x SECURITY.md
+    deploy:
+      provider: releases
+      token:
+        secure: "PouNH2PNtK4Nw+C8uySZ+oTo65HUMWu78ukUvccGgewiMVeGOP3lZMUxeIiAIqcCvubLycPlVSrE51RmvoNCGBGENhu91xxDtk27slM9CCGoHzk5xgzx2C3LrHa+9kpEvw55C3OGG54dRI5U4qx7W28uSCNB+R17Y3SeOm4Z/KRG4U5obMiwFfqPfj+NithqWeqFMZnJL5fAjwAiB5ZA9n5hQRcuOJl0YAdPmby7FsulbmQaLzNA90OrNHnPyrSMDtCYMiUDu5Kv6L3F03rvcUYRKPFWRZ7vBJY5Euyzp9AIoJWAJg1S3OR+/UG2Evsa5ma0W3yDsO/cBTZQ7MR22sru4MSl2iwfvisGJ6feDZU2N4InMirdrOjbfv1Y+47RUBr6jeYyV/QXocKvj10xt74U8TxXpLHMgNQFtz6dFKZyE/A4u3DlxQvT9XRp9toWTnpxw681JAjPfIlTyaq6UHxrYPUsJv86mCokdufZ0lWhK2ZMbizSZiryTn+eZpd7fVLB2OME46fcFRVqs6/hF6jU+akVf2C5LPWV3N9Y4N27PNGNsAo9+DDuc8NIxMgZXjXPb2/zT0HMvxMHbQvrxuWqB3yf0oFJnvsh9LxCUDp9btMBclzFiR2S7AYwvTz2UsiG0HbhK0WwDa8ohm33fyfmgPujMbcaWW3Xx2nJL5Q="
+      file: "../humanity-image-credit-develop.zip"
+      skip_cleanup: true
+      draft: true
+      overwrite: true
+      on:
+        repo: amnestywebsite/humanity-image-credit
+        branch: develop
+
+  - stage: Update Draft Release [STG]
+    script:
+    - zip -r ../humanity-image-credit-staging.zip ./ -x docs\* -x vendor\* -x .\* -x CHANGELOG.md -x CODE_OF_CONDUCT.md -x composer.json -x composer.lock -x CONTRIBUTING.md -x LICENSE.md -x phpcs.xml -x SECURITY.md
+    deploy:
+      provider: releases
+      token:
+        secure: "PouNH2PNtK4Nw+C8uySZ+oTo65HUMWu78ukUvccGgewiMVeGOP3lZMUxeIiAIqcCvubLycPlVSrE51RmvoNCGBGENhu91xxDtk27slM9CCGoHzk5xgzx2C3LrHa+9kpEvw55C3OGG54dRI5U4qx7W28uSCNB+R17Y3SeOm4Z/KRG4U5obMiwFfqPfj+NithqWeqFMZnJL5fAjwAiB5ZA9n5hQRcuOJl0YAdPmby7FsulbmQaLzNA90OrNHnPyrSMDtCYMiUDu5Kv6L3F03rvcUYRKPFWRZ7vBJY5Euyzp9AIoJWAJg1S3OR+/UG2Evsa5ma0W3yDsO/cBTZQ7MR22sru4MSl2iwfvisGJ6feDZU2N4InMirdrOjbfv1Y+47RUBr6jeYyV/QXocKvj10xt74U8TxXpLHMgNQFtz6dFKZyE/A4u3DlxQvT9XRp9toWTnpxw681JAjPfIlTyaq6UHxrYPUsJv86mCokdufZ0lWhK2ZMbizSZiryTn+eZpd7fVLB2OME46fcFRVqs6/hF6jU+akVf2C5LPWV3N9Y4N27PNGNsAo9+DDuc8NIxMgZXjXPb2/zT0HMvxMHbQvrxuWqB3yf0oFJnvsh9LxCUDp9btMBclzFiR2S7AYwvTz2UsiG0HbhK0WwDa8ohm33fyfmgPujMbcaWW3Xx2nJL5Q="
+      file: "../humanity-image-credit-staging.zip"
+      skip_cleanup: true
+      draft: true
+      overwrite: true
+      on:
+        repo: amnestywebsite/humanity-image-credit
+        branch: staging
+
+  - stage: Update Draft Release [PRD]
+    script:
+    - zip -r ../humanity-image-credit.zip ./ -x docs\* -x vendor\* -x .\* -x CHANGELOG.md -x CODE_OF_CONDUCT.md -x composer.json -x composer.lock -x CONTRIBUTING.md -x LICENSE.md -x phpcs.xml -x SECURITY.md
+    deploy:
+      provider: releases
+      token:
+        secure: "PouNH2PNtK4Nw+C8uySZ+oTo65HUMWu78ukUvccGgewiMVeGOP3lZMUxeIiAIqcCvubLycPlVSrE51RmvoNCGBGENhu91xxDtk27slM9CCGoHzk5xgzx2C3LrHa+9kpEvw55C3OGG54dRI5U4qx7W28uSCNB+R17Y3SeOm4Z/KRG4U5obMiwFfqPfj+NithqWeqFMZnJL5fAjwAiB5ZA9n5hQRcuOJl0YAdPmby7FsulbmQaLzNA90OrNHnPyrSMDtCYMiUDu5Kv6L3F03rvcUYRKPFWRZ7vBJY5Euyzp9AIoJWAJg1S3OR+/UG2Evsa5ma0W3yDsO/cBTZQ7MR22sru4MSl2iwfvisGJ6feDZU2N4InMirdrOjbfv1Y+47RUBr6jeYyV/QXocKvj10xt74U8TxXpLHMgNQFtz6dFKZyE/A4u3DlxQvT9XRp9toWTnpxw681JAjPfIlTyaq6UHxrYPUsJv86mCokdufZ0lWhK2ZMbizSZiryTn+eZpd7fVLB2OME46fcFRVqs6/hF6jU+akVf2C5LPWV3N9Y4N27PNGNsAo9+DDuc8NIxMgZXjXPb2/zT0HMvxMHbQvrxuWqB3yf0oFJnvsh9LxCUDp9btMBclzFiR2S7AYwvTz2UsiG0HbhK0WwDa8ohm33fyfmgPujMbcaWW3Xx2nJL5Q="
+      file: "../humanity-image-credit.zip"
+      skip_cleanup: true
+      draft: true
+      overwrite: true
+      on:
+        repo: amnestywebsite/humanity-image-credit
+        branch: main
