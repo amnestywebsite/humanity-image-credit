@@ -34,7 +34,7 @@ function get_image_from_cache( string $url ): ?array {
  */
 function add_image_to_cache( int $id, string $size, string $url, int $blog_id = 1 ): int {
 	$key  = 'image_url_to_id_' . md5( $url );
-	$data = [ // phpcs doesn't like compact(), for some reason
+	$data = [
 		'id'      => $id,
 		'size'    => $size,
 		'blog_id' => $blog_id,
@@ -177,7 +177,7 @@ function lookup_image_id( string $url ): ?array {
 		$wpdb->prepare(
 			"SELECT id, blog_id, size, uri FROM {$wpdb->base_prefix}ai_media_lookup WHERE hash = %s LIMIT 1",
 			md5( $path )
-		) 
+		)
 	);
 
 	if ( ! $data || $data->uri !== $path ) {
@@ -218,7 +218,7 @@ function lookup_image_urls( int $id, int $blog_id = 1 ): ?array {
 			$id,
 			$blog_id
 		),
-		ARRAY_A 
+		ARRAY_A
 	);
 
 	if ( ! $urls ) {
