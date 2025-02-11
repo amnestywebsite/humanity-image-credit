@@ -15,6 +15,13 @@ before_install:
 install:
 - composer install
 
+before_deploy:
+- yes | gem update --system --force
+- gem install bundler
+- gem install uri
+- gem install logger
+- gem install faraday-net_http -v '3.3.0'
+
 stages:
   - name: Lint
     if: branch IS present
