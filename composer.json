@@ -4,7 +4,8 @@
   "license": "none",
   "minimum-stability": "stable",
   "require-dev": {
-    "bigbite/phpcs-config": "v2.0.0"
+    "bigbite/phpcs-config": "v2.0.0",
+    "php-stubs/wp-cli-stubs": "^2.11"
   },
   "config": {
     "allow-plugins": {
@@ -14,13 +15,9 @@
   "scripts": {
     "lint": "./vendor/bin/phpcs .",
     "lang": [
-      "type msgmerge &> /dev/null || { echo 'Please install gettext'; exit 1; }",
-      "wp i18n make-pot . ./languages/aiic.pot --domain=aiic --exclude=private/node_modules,assets,vendor",
-      "for p in ./languages/*.po; do msguniq \"$p\" -o \"$p\"; done",
-      "for p in ./languages/*.po; do msgmerge --quiet -o \"$p.tmp\" --no-fuzzy-matching \"$p\" \"./languages/aiic.pot\"; done",
-      "for p in ./languages/*.po; do msgattrib --no-obsolete -o \"$p\" \"$p.tmp\"; done",
-      "for p in ./languages/*.po.tmp; do rm \"$p\"; done",
-      "for p in ./languages/*.po; do msgfmt -cv --statistics \"$p\" -o \"${p%.*}.mo\"; done"
+      "wp i18n make-pot . ./languages/aiic.pot --domain=aiic --exclude=vendor",
+      "wp i18n update-po ./languages/aiic.pot",
+      "wp i18n make-mo ./languages"
     ]
   },
   "scripts-descriptions": {
