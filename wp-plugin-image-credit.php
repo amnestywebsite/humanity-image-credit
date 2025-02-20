@@ -4,7 +4,7 @@
  * Plugin Name:       Humanity Image Credit
  * Plugin URI:        https://github.com/amnestywebsite/humanity-image-credit
  * Description:       Handles automatic rendering of an image's "credit" (description field) on images on the frontend
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Amnesty International
  * Author URI:        https://www.amnesty.org
  * License:           GPL-2.0-or-later
