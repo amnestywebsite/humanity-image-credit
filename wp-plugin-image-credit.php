@@ -14,7 +14,7 @@
  * Network:           true
  * Requires PHP:      8.2.0
  * Requires at least: 5.6.0
- * Tested up to:      6.6.2
+ * Tested up to:      6.7.2
  */
 
 declare( strict_types = 1 );
