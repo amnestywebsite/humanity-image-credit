@@ -1,3 +1,7 @@
+### v1.0.2
+CI:
+- Replace Travis CI with GitHub Actions
+
 ### v1.0.1
 Localisation:
 - Use WP CLI for language file compilation
